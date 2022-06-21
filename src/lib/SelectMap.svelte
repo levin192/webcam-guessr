@@ -1,15 +1,15 @@
 <script lang="ts">
     import {onMount} from 'svelte';
-    import Map from "ol/Map";
-    import View from "ol/View";
-    import TileLayer from "ol/layer/Tile";
-    import * as proj from "ol/proj";
-    import OSM from "ol/source/OSM";
+    import Map from "ol/Map.js";
+    import View from "ol/View.js";
+    import TileLayer from "ol/layer/Tile.js";
+    import * as proj from "ol/proj.js";
+    import OSM from "ol/source/OSM.js";
     import {createEventDispatcher} from 'svelte';
 
-    const dispatch = createEventDispatcher();
-
     import "ol/ol.css";
+
+    const dispatch = createEventDispatcher();
 
     onMount(() => {
         const map = new Map({
