@@ -7,7 +7,7 @@
     import DataProvider from "$lib/DataProvider";
     import {randomEntry, getDistanceInKm} from "$lib/helpers";
     import Modal from '$lib/Modal.svelte';
-    import Map from '$lib/Map.svelte'
+    import SelectMap from '$lib/SelectMap.svelte'
 
     const cam = new RandomCam()
 
@@ -91,7 +91,7 @@
                 Place Marker
             </h2>
 
-            <Map on:setCoordinates={handleSetCoordinates}/>
+            <SelectMap on:setCoordinates={handleSetCoordinates}/>
 
         </Modal>
     {/if}
