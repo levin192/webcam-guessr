@@ -1,39 +1,40 @@
 <script>
-  import { createEventDispatcher, onDestroy } from 'svelte';
+  import { createEventDispatcher, onDestroy } from 'svelte'
+  import IconButton from '@smui/icon-button'
 
-  const dispatch = createEventDispatcher();
-  const close = () => dispatch('close');
+  const dispatch = createEventDispatcher()
+  const close = () => dispatch('close')
 
-  let modal;
+  let modal
 
   const handle_keydown = e => {
     if (e.key === 'Escape') {
-      close();
-      return;
+      close()
+      return
     }
 
     if (e.key === 'Tab') {
       // trap focus
-      const nodes = modal.querySelectorAll('*');
-      const tabbable = Array.from(nodes).filter(n => n.tabIndex >= 0);
+      const nodes = modal.querySelectorAll('*')
+      const tabbable = Array.from(nodes).filter(n => n.tabIndex >= 0)
 
-      let index = tabbable.indexOf(document.activeElement);
-      if (index === -1 && e.shiftKey) index = 0;
+      let index = tabbable.indexOf(document.activeElement)
+      if (index === -1 && e.shiftKey) index = 0
 
-      index += tabbable.length + (e.shiftKey ? -1 : 1);
-      index %= tabbable.length;
+      index += tabbable.length + (e.shiftKey ? -1 : 1)
+      index %= tabbable.length
 
-      tabbable[index].focus();
-      e.preventDefault();
+      tabbable[index].focus()
+      e.preventDefault()
     }
-  };
+  }
 
-  const previously_focused = typeof document !== 'undefined' && document.activeElement;
+  const previously_focused = typeof document !== 'undefined' && document.activeElement
 
   if (previously_focused) {
     onDestroy(() => {
-      previously_focused.focus();
-    });
+      previously_focused.focus()
+    })
   }
 </script>
 
@@ -42,39 +43,45 @@
 <div class="modal-background" on:click={close}></div>
 
 <div class="modal" role="dialog" aria-modal="true" bind:this={modal}>
-    <slot name="header"></slot>
-    <hr>
+    <div class="modal-head">
+        <div class="modal-head-slot">
+            <slot name="header"></slot>
+        </div>
+        <!-- svelte-ignore a11y-autofocus -->
+        <IconButton class="material-icons" autofocus on:click={close}>close</IconButton>
+    </div>
     <slot></slot>
-    <hr>
-
-    <!-- svelte-ignore a11y-autofocus -->
-    <button autofocus on:click={close}>close modal</button>
 </div>
 
-<style>
-    .modal-background {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0,0,0,0.3);
+<style lang="scss">
+  .modal {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: calc(80vw - 4em);
+    max-height: calc(100vh - 4em);
+    overflow: hidden;
+    transform: translate(-50%, -50%);
+    padding: 1em;
+    border-radius: 0.2em;
+    background: white;
+
+    &-head {
+      display: flex;
+      align-items: center;
+      &-slot {
+        margin-right: auto;
+      }
     }
 
-    .modal {
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        width: calc(80vw - 4em);
-        max-height: calc(100vh - 4em);
-        overflow: auto;
-        transform: translate(-50%,-50%);
-        padding: 1em;
-        border-radius: 0.2em;
-        background: white;
+    &-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.3);
     }
+  }
 
-    button {
-        display: block;
-    }
 </style>
