@@ -76,11 +76,15 @@
             lon: parseFloat(selectedCoordinates.lon),
             lat: parseFloat(selectedCoordinates.lat)
         }
-        actualCoordinates = {lon: webcam.location.longitude, lat: webcam.location.latitude }
+        actualCoordinates = {lon: webcam.location.longitude, lat: webcam.location.latitude}
         showModal = false
-        score = getDistanceInKm(selectedCoordinates, actualCoordinates) + 'km'
+        score = getDistanceInKm(selectedCoordinates, actualCoordinates)
     }
 
+    const calcScorePoints = (km: number) => {
+        let kmToScore = (1000 / (km + 1000)) * 1000
+        return Math.round(kmToScore)
+    }
 
 </script>
 
@@ -95,7 +99,8 @@
                     coordsClicked="{valuesToArray(selectedCoordinates)}"
                     coordsSolution="{valuesToArray(actualCoordinates)}"
             />
-            <h1>Distance: {score}</h1>
+            <h1>Score: {calcScorePoints(score)}/1000</h1>
+            <b>Distance: {score}km</b>
             <h2>The Webcam is in: {webcam.location.city}, {webcam.location.country}</h2>
             <Button on:click={()=>{window.location.reload()}}>Restart</Button>
         </section>
