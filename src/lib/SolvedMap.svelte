@@ -69,11 +69,20 @@
             // linestring
             new style.Style({
                 stroke: new style.Stroke({
-                    color: '#d12710',
-                    width: 4
+                    color: 'rgb(244, 67, 54)',
+                    width: 2
                 })
             })
         ];
+        const markerStyleCircle = new style.Style({
+            image: new style.Circle({
+                radius: 4,
+                fill: new style.Fill({color: 'rgba(244, 67, 54)'}),
+                stroke: new style.Stroke({
+                    color: 'rgb(244, 67, 54', width: 1
+                })
+            })
+        })
 
         const line = new layer.Vector({
             source: new source.Vector({
@@ -83,12 +92,55 @@
                 })]
             })
         });
+        const webcamMarker = new layer.Vector({
+            source: new source.Vector({
+                features: [
+                    new Feature({
+                        geometry: new geom.Point(proj.fromLonLat(coordsSolution)),
+                        name: 'Webcam Position'
+                    })
+                ]
+            })
+        });
+        const clickedMarker = new layer.Vector({
+            source: new source.Vector({
+                features: [
+                    new Feature({
+                        geometry: new geom.Point(proj.fromLonLat(coordsClicked)),
+                        name: 'Clicked Position'
+                    })
+                ]
+            })
+        });
+        const markerStyleX = new style.Style({
+            image: new style.RegularShape({
+                fill: new style.Fill({color: 'rgb(244, 67, 54)'}),
+                stroke: new style.Stroke({
+                    color: 'rgb(244, 67, 54', width: 3
+                }),
+                points: 4,
+                radius: 10,
+                radius2: 0,
+                rotation: Math.PI / 4,
+                angle: 0,
+            }),
+        })
+
 
         line.setStyle(lineStyle);
         map.addLayer(line);
+
+        webcamMarker.setStyle(markerStyleX);
+        map.addLayer(webcamMarker);
+
+        clickedMarker.setStyle(markerStyleCircle);
+        map.addLayer(clickedMarker);
+
         const extent = line.getSource().getExtent();
 
-        map.getView().fit(extent, {padding: [25, 25, 25, 25]});
+        map.getView().fit(extent, {padding: [35, 35, 35, 35]});
+
+
     })
 </script>
 <div id="solvedMap"></div>
