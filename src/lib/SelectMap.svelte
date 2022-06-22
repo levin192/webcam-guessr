@@ -54,19 +54,18 @@
         })
     }
 
-    const handleMousemove = (event) => {
-        if (!markerLocked) {
-            const bounding = event.target.getBoundingClientRect()
-            m.x = event.clientX - bounding.left;
-            m.y = event.clientY - bounding.top;
-        }
+    const handleMouseClick = (event) => {
+        markerLocked = true
+        const bounding = event.target.getBoundingClientRect()
+        m.x = event.clientX - bounding.left - 6;
+        m.y = event.clientY - bounding.top - 5;
+
     }
 
 
 </script>
 <div class="map-wrapper">
-    <div id="map" class:locked={markerLocked} on:mousemove={handleMousemove} on:mouseenter={() => {markerVisible=true}}
-         on:mouseleave={() => {markerVisible = false}} on:click={()=>{markerLocked=true}}></div>
+    <div id="map" class:locked={markerLocked} on:click={handleMouseClick}></div>
     <div id="marker" class:visible={markerVisible} class:locked={markerLocked} style="top:{m.y}px;left:{m.x}px">
         <div class="actions-buttons-wrap">
             <div class="submit">Submit?</div>
@@ -89,7 +88,7 @@
   }
 
   #map {
-    cursor: none;
+    cursor: crosshair;
     width: calc(80vw - 4em);
     height: 50vh;
 
@@ -112,12 +111,14 @@
     &.visible, &.locked {
       opacity: 1;
     }
+
     &.locked {
       .actions-buttons-wrap {
         pointer-events: all;
         opacity: 1;
       }
     }
+
     .actions-buttons-wrap {
       display: flex;
       min-width: 140px;
@@ -131,6 +132,7 @@
       opacity: 0;
       pointer-events: none;
       flex-wrap: wrap;
+
       .submit {
         width: 100%;
         margin-bottom: 5px;
