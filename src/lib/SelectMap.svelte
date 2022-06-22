@@ -1,11 +1,15 @@
 <script lang="ts">
+    import {env} from '$lib/env'
     import {onMount} from 'svelte';
     import Map from "ol/Map.js";
     import View from "ol/View.js";
     import TileLayer from "ol/layer/Tile.js";
     import * as proj from "ol/proj.js";
     import OSM from "ol/source/OSM.js";
+    import BingMaps from 'ol/source/BingMaps';
     import {createEventDispatcher} from 'svelte';
+
+    import {userPrefDarkMode} from "./store";
 
     import Fab, {Icon} from '@smui/fab'
 
@@ -13,11 +17,25 @@
 
     const dispatch = createEventDispatcher();
 
+    let lightMapStyle;
+
+
+
+    userPrefDarkMode.subscribe(value => {
+        lightMapStyle = value;
+    });
+
     onMount(() => {
         const map = new Map({
             layers: [
                 new TileLayer({
-                    source: new OSM(),
+                    source: new BingMaps({
+                        key: env.VITE_BING_API_KEY,
+                        imagerySet: (!lightMapStyle)?'RoadOnDemand':'CanvasDark',
+                        // use maxZoom 19 to see stretched tiles instead of the BingMaps
+                        // "no photos at this zoom level" tiles
+                        // maxZoom: 19
+                    }),
                     visible: true,
                 }),
             ],

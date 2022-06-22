@@ -31,10 +31,11 @@ const deg2rad = (deg: number) => {
 }
 const valuesToArray = (inputObject: object) => {
     return (Object.keys(inputObject) as (keyof typeof inputObject)[])
-        .map((key:string) => {
+        .map((key: string) => {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
             return inputObject[key];
         });
 }
-export {randomEntry, getDistanceInKm,valuesToArray}
+
+export {randomEntry, getDistanceInKm, valuesToArray}
