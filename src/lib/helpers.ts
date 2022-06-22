@@ -29,5 +29,12 @@ const getDistanceInKm = (coordinatesOne: Coordinates, coordinatesTwo: Coordinate
 const deg2rad = (deg: number) => {
     return deg * (Math.PI / 180)
 }
-
-export {randomEntry, getDistanceInKm}
+const valuesToArray = (inputObject: object) => {
+    return (Object.keys(inputObject) as (keyof typeof inputObject)[])
+        .map((key:string) => {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            return inputObject[key];
+        });
+}
+export {randomEntry, getDistanceInKm,valuesToArray}

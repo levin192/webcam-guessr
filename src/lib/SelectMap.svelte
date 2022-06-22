@@ -44,12 +44,11 @@
     let markerVisible = false
     let markerLocked = false
 
-    $: if (markerLocked) {
-        console.log('locked')
-    }
+    // $: if (markerLocked) {
+    //     console.log('locked')
+    // }
 
     const confirmCoordinates = () => {
-        console.log('Send confirm???')
         dispatch('setCoordinates', {
             lat, lon
         })

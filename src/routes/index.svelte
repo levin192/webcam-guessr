@@ -7,9 +7,10 @@
     import Fab, {Icon} from '@smui/fab';
     import RandomCam from "$lib/webcam/RandomCam";
     import DataProvider from "$lib/DataProvider";
-    import {randomEntry, getDistanceInKm} from "$lib/helpers";
+    import {randomEntry, getDistanceInKm, valuesToArray} from "$lib/helpers";
     import Modal from '$lib/Modal.svelte';
     import SelectMap from '$lib/SelectMap.svelte'
+    import SolvedMap from '$lib/SolvedMap.svelte'
     import LoadingOverlay from '$lib/LoadingOverlay.svelte'
     import {fly, fade} from 'svelte/transition';
 
@@ -71,7 +72,11 @@
     }
     const handleSetCoordinates = (event) => {
         selectedCoordinates = event.detail
-        actualCoordinates = {lat: webcam.location.latitude, lon: webcam.location.longitude}
+        selectedCoordinates = {
+            lon: parseFloat(selectedCoordinates.lon),
+            lat: parseFloat(selectedCoordinates.lat)
+        }
+        actualCoordinates = {lon: webcam.location.longitude, lat: webcam.location.latitude }
         showModal = false
         score = getDistanceInKm(selectedCoordinates, actualCoordinates) + 'km'
     }
@@ -86,6 +91,10 @@
 <div class="the-game">
     {#if score }
         <section class="score-section" transition:fly="{{ y: 200, duration: 1800 }}">
+            <SolvedMap
+                    coordsClicked="{valuesToArray(selectedCoordinates)}"
+                    coordsSolution="{valuesToArray(actualCoordinates)}"
+            />
             <h1>Distance: {score}</h1>
             <h2>The Webcam is in: {webcam.location.city}, {webcam.location.country}</h2>
             <Button on:click={()=>{window.location.reload()}}>Restart</Button>
