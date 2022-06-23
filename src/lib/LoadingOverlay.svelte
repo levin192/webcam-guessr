@@ -11,7 +11,6 @@
         position: absolute;
         inset: 0;
         width: 100%;
-        background: aliceblue;
         height: 100%;
         display: flex;
         justify-content: center;

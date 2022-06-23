@@ -62,13 +62,15 @@
     max-height: calc(100vh - 4em);
     overflow: visible;
     transform: translate(-50%, -50%);
-    padding: 1em;
-    border-radius: 0.2em;
-    background: white;
+    padding: 1rem 2rem;
+    border-radius: 4px;
+    background: var(--background-color);
+    box-shadow: #161616 0 0 70px 15px;
 
     &-head {
       display: flex;
       align-items: center;
+
       &-slot {
         margin-right: auto;
       }

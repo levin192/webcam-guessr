@@ -187,7 +187,6 @@
 
     &.score-section {
       width: 100%;
-      background: aliceblue;
       position: absolute;
       height: 100%;
       left: 0;
