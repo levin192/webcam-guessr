@@ -1,24 +1,27 @@
-# create-svelte
+# webcam-guessr
+[![Netlify Status](https://api.netlify.com/api/v1/badges/6f6b78c7-3030-4d7d-b52c-d9a0a8f11d58/deploy-status)](https://app.netlify.com/sites/webcamguessr/deploys)
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+-----
 
-## Creating a project
+## Environment Variables
 
-If you're seeing this, you've probably already done this step. Congrats!
+Copy `.env.example`-File in root to `.env` and set the specific keys.
 
-```bash
-# create a new project in the current directory
-npm init svelte
+Needs API-Keys for Bing Maps and Windy
 
-# create a new project in my-app
-npm init svelte my-app
-```
+- Windy API: [https://api.windy.com/webcams](https://api.windy.com/webcams)
+- Bing Maps: [https://www.bingmapsportal.com/](https://api.windy.com/webcams)
+
+Alternatively use OSM for local development ([https://www.openstreetmap.org/](https://www.openstreetmap.org/))
 
 ## Developing
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+Once you've cloned project and installed dependencies with `npm install` start a development server:
 
 ```bash
+# prepare project when changing theme or on first start
+npm run prepare
+
 npm run dev
 
 # or start the server and open the app in a new browser tab
