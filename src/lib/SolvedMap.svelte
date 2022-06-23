@@ -9,11 +9,20 @@
     import * as layer from "ol/layer.js";
     import * as style from "ol/style.js";
     import Feature from "ol/Feature.js";
-    import OSM from "ol/source/OSM.js";
-    import "ol/ol.css";
+    //  import OSM from "ol/source/OSM.js";
+    import BingMaps from 'ol/source/BingMaps';
+
+    import {env} from "./env";
+    import {userPrefDarkMode} from "$lib/store";
 
     export let coordsSolution: number[]
     export let coordsClicked: number[]
+
+    let lightMapStyle;
+
+    userPrefDarkMode.subscribe(value => {
+        lightMapStyle = value;
+    });
 
     const toRadius = (number: number) => {
         return number * Math.PI / 180;
@@ -27,10 +36,10 @@
         let lng2 = coordinates2[0]
         let lat1 = coordinates1[1]
         let lat2 = coordinates2[1]
-        //-- Longitude difference
+        // Longitude difference
         const dLng = toRadius(lng2 - lng1);
 
-        //-- Convert to radians
+        // Convert to radians
         lat1 = toRadius(lat1);
         lat2 = toRadius(lat2);
         lng1 = toRadius(lng1);
@@ -40,7 +49,7 @@
         const lat3 = Math.atan2(Math.sin(lat1) + Math.sin(lat2), Math.sqrt((Math.cos(lat1) + bX) * (Math.cos(lat1) + bX) + bY * bY));
         const lng3 = lng1 + Math.atan2(bY, Math.cos(lat1) + bX);
 
-        //-- Return result
+        // Return result
         return [toDegree(lng3), toDegree(lat3)];
     }
 
@@ -48,7 +57,13 @@
         const map = new Map({
             layers: [
                 new TileLayer({
-                    source: new OSM(),
+                    source: new BingMaps({
+                        key: env.VITE_BING_API_KEY,
+                        imagerySet: (!lightMapStyle) ? 'RoadOnDemand' : 'CanvasDark',
+                        // use maxZoom 19 to see stretched tiles instead of the BingMaps
+                        // "no photos at this zoom level" tiles
+                        // maxZoom: 19
+                    }),
                     visible: true,
                 }),
             ],

@@ -1,23 +1,39 @@
 <script lang="ts">
+    import {env} from '$lib/env'
     import {onMount} from 'svelte';
     import Map from "ol/Map.js";
     import View from "ol/View.js";
     import TileLayer from "ol/layer/Tile.js";
     import * as proj from "ol/proj.js";
-    import OSM from "ol/source/OSM.js";
+    // import OSM from "ol/source/OSM.js";
+    import BingMaps from 'ol/source/BingMaps';
     import {createEventDispatcher} from 'svelte';
-
+    import {userPrefDarkMode} from "./store";
     import Fab, {Icon} from '@smui/fab'
 
-    import "ol/ol.css";
+    import '$lib/style/map.scss'
+
 
     const dispatch = createEventDispatcher();
+
+    let lightMapStyle;
+
+
+    userPrefDarkMode.subscribe(value => {
+        lightMapStyle = value;
+    });
 
     onMount(() => {
         const map = new Map({
             layers: [
                 new TileLayer({
-                    source: new OSM(),
+                    source: new BingMaps({
+                        key: env.VITE_BING_API_KEY,
+                        imagerySet: (!lightMapStyle) ? 'RoadOnDemand' : 'CanvasDark',
+                        // use maxZoom 19 to see stretched tiles instead of the BingMaps
+                        // "no photos at this zoom level" tiles
+                        // maxZoom: 19
+                    }),
                     visible: true,
                 }),
             ],
@@ -40,7 +56,8 @@
     })
     let lon
     let lat
-    let m = {x: 0, y: 0};
+    let m = {x: 0, y: 0}
+    let mOld = {x: 0, y: 0}
     let markerVisible = false
     let markerLocked = false
 
@@ -54,18 +71,30 @@
         })
     }
 
-    const handleMouseClick = (event) => {
-        markerLocked = true
-        const bounding = event.target.getBoundingClientRect()
-        m.x = event.clientX - bounding.left - 6;
-        m.y = event.clientY - bounding.top - 5;
+    const handleMouseUp = (event) => {
+        const posX = event.clientX
+        const posY = event.clientY
+        if (moved(posY, mOld.y) || moved(posX, mOld.x)) {
+            markerLocked = true
+            const bounding = event.target.getBoundingClientRect()
+            m.x = posX - bounding.left - 6;
+            m.y = posY - bounding.top - 5;
+        }
+    }
 
+    const handleMouseDown = (event) => {
+        mOld.y = event.clientY
+        mOld.x = event.clientX
+    }
+
+    const moved = (actual: number, comparison: number) => {
+        return Math.abs(actual - comparison) === 0
     }
 
 
 </script>
 <div class="map-wrapper">
-    <div id="map" class:locked={markerLocked} on:click={handleMouseClick}></div>
+    <div id="map" class:locked={markerLocked} on:mousedown={handleMouseDown} on:mouseup={handleMouseUp}></div>
     <div id="marker" class:visible={markerVisible} class:locked={markerLocked} style="top:{m.y}px;left:{m.x}px">
         <div class="actions-buttons-wrap">
             <div class="submit">Submit?</div>
@@ -137,6 +166,7 @@
         width: 100%;
         margin-bottom: 5px;
         text-align: center;
+        color: var(--invert-text);
       }
     }
   }

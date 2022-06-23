@@ -2,7 +2,7 @@
 
 @use '@material/theme/color-palette';
 
-// Svelte Colors! (Dark Theme)
+
 @use '@material/theme/index' as theme with (
   $primary: #ff3e00,
   $secondary: color.scale(#676778, $whiteness: -10%),
@@ -13,8 +13,14 @@
 
 html,
 body {
-  background-color: #000;
-  color: theme.$on-surface;
+  background-color: #{theme.$background};
+  color: #{theme.$on-surface};
+  --primary-color: #{theme.$primary};
+  --secondary-color: #{theme.$secondary};
+  --surface-color: #{theme.$surface};
+  --background-color: #{theme.$background};
+  --error-color: #{theme.$error};
+  --invert-text: #{theme.$background};
 }
 
 a {

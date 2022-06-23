@@ -1,8 +1,9 @@
 @use 'sass:color';
 
 @use '@material/theme/color-palette';
+// @use '@material/theme/color-palette';
 
-// Svelte Colors!
+
 @use '@material/theme/index' as theme with (
   $primary: color-palette.$red-500,
   $secondary: color-palette.$grey-400,
@@ -15,6 +16,12 @@ html,
 body {
   background: linear-gradient(0deg, rgba(255, 255, 255, 0) 0%, rgba(207, 216, 220, 1) 100%) no-repeat;
   color: theme.$on-surface;
+  --primary-color: #{theme.$primary};
+  --secondary-color:  #{theme.$secondary};
+  --surface-color:  #{theme.$surface};
+  --background-color:  #{theme.$background};
+  --error-color:  #{theme.$error};
+  --invert-text:  #{theme.$background};
 }
 
 a {
