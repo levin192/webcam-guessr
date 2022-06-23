@@ -10,7 +10,7 @@
     import * as style from "ol/style.js";
     import Feature from "ol/Feature.js";
     //  import OSM from "ol/source/OSM.js";
-    import BingMaps from 'ol/source/BingMaps';
+    import BingMaps from 'ol/source/BingMaps.js';
 
     import {env} from "./env";
     import {userPrefDarkMode} from "$lib/store";
