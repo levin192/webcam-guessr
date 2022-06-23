@@ -21,7 +21,7 @@ body {
   --surface-color:  #{theme.$surface};
   --background-color:  #{theme.$background};
   --error-color:  #{theme.$error};
-  --invert-text:  #{theme.$background};
+  --invert-text:  black;
 }
 
 a {
