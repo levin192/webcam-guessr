@@ -1,7 +1,6 @@
 <script lang="ts">
     import {fly} from 'svelte/transition';
     import Button from '@smui/button';
-
     import {valuesToArray} from '$lib/util/helpers';
     import SolvedMap from '$lib/maps/SolvedMap.svelte';
 
