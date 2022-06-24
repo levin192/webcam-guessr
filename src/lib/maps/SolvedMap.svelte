@@ -9,7 +9,6 @@
     import * as layer from "ol/layer.js";
     import * as style from "ol/style.js";
     import Feature from "ol/Feature.js";
-    //  import OSM from "ol/source/OSM.js";
     import BingMaps from 'ol/source/BingMaps.js';
 
     import {env} from "$lib/env";
