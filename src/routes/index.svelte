@@ -4,8 +4,8 @@
 
 <script lang="ts">
     import Button from '@smui/button';
-    import DataProvider from '$lib/DataProvider';
-    import {randomEntry, getDistanceInKm} from '$lib/helpers';
+    import DataProvider from '$lib/util/DataProvider';
+    import {randomEntry, getDistanceInKm} from '$lib/util/helpers';
     import SelectMap from '$lib/maps/SelectMap.svelte';
     import RandomCam from '$lib/util/RandomCam';
     import Modal from '$lib/components/Modal.svelte';
