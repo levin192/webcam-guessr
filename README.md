@@ -5,7 +5,7 @@
 
 ## Environment Variables
 
-Copy `.env.example`-File in root to `.env` and set the specific keys.
+Copy `.env.example` in root to `.env` and set the specific keys.
 
 Needs API-Keys for Bing Maps and Windy
 
@@ -16,7 +16,7 @@ Alternatively use OSM for local development ([https://www.openstreetmap.org/](ht
 
 ## Developing
 
-Once you've cloned project and installed dependencies with `npm install` start a development server:
+Once you've cloned the project and installed dependencies with `npm install` start a development server:
 
 ```bash
 # prepare project when changing theme or on first start
