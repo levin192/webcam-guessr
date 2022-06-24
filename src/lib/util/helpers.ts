@@ -3,8 +3,15 @@ interface Coordinates {
     lon: number;
 }
 
+
 const randomEntry = (entries: string[]) => {
     return entries[Math.floor(Math.random() * entries.length)]
+}
+
+async function fetchApiContent(obj: any, resultProp: string): Promise<string[]> {
+    return obj.fetchApiContent().then((data: any) => {
+        return data.result[resultProp];
+    });
 }
 
 // https://stackoverflow.com/questions/18883601/function-to-calculate-distance-between-two-coordinates
@@ -38,4 +45,4 @@ const valuesToArray = (inputObject: object) => {
         });
 }
 
-export {randomEntry, getDistanceInKm, valuesToArray}
+export {randomEntry, getDistanceInKm, valuesToArray, fetchApiContent}

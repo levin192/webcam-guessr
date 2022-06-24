@@ -7,15 +7,15 @@
     import DataProvider from '$lib/util/DataProvider';
     import {randomEntry, getDistanceInKm} from '$lib/util/helpers';
     import SelectMap from '$lib/maps/SelectMap.svelte';
-    import RandomCam from '$lib/util/RandomCam';
+    import CountryData from '$lib/util/data/CountryData';
     import Modal from '$lib/components/Modal.svelte';
     import SelectGameMode from '$lib/components/SelectGameMode.svelte';
     import ScoreScreen from "$lib/components/ScoreScreen.svelte";
     import WebcamScreen from "$lib/components/WebcamScreen.svelte";
+    import {onMount} from "svelte";
 
-    const cam = new RandomCam();
 
-    let country: { id: string };
+    let country: unknown;
     let countryLoaded = 0;
     let webcam;
     let webcamLoaded = false;
@@ -26,16 +26,20 @@
     let webCamImage;
     let clickedStart = false;
 
-    $: if (countryLoaded === 1) {
+    const countryData = new CountryData()
+
+    onMount(() => {loadCountry()})
+
+    $: if (countryLoaded === 1 && clickedStart) {
         countryLoaded++;
         const webcamList = new DataProvider(
-            '/list/country=' + country.id + '?show=webcams:location,image,player'
+            '/list/country=' + country + '?show=webcams:location,image,player'
         );
+
         webcamList
             .fetchApiContent()
             .then((data) => {
                 webcam = randomEntry(data.result.webcams);
-                console.log({webcam});
                 webcamLoaded = true;
                 return webcam;
             })
@@ -53,17 +57,19 @@
         loadCountry();
     };
 
-    async function setRandomCountry() {
-        return await cam.getRandomCountry();
-    }
 
     const loadCountry = () => {
-        clickedStart = true;
-        setRandomCountry().then((data: any) => {
-            country = data;
+        countryData.getRandomCountry().then(id => {
+            country = id
             countryLoaded++;
-        });
+        })
+
     };
+
+    const handleGameStart = () => {
+        clickedStart = true;
+    }
+
     const handleSetCoordinates = (event) => {
         selectedCoordinates = event.detail;
         selectedCoordinates = {
@@ -83,11 +89,11 @@
 {#if score}
     <ScoreScreen {selectedCoordinates} {actualCoordinates} {score} {webcam}/>
 {/if}
-{#if !countryLoaded && !clickedStart}
+{#if !clickedStart}
     <section class="intro">
         <h1>Webcam-Guessr</h1>
         <SelectGameMode/>
-        <Button on:click={loadCountry} variant="raised">Start</Button>
+        <Button on:click={handleGameStart} variant="raised">Start</Button>
     </section>
 {/if}
 {#if clickedStart && !score}

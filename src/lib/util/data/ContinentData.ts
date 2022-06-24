@@ -1,4 +1,4 @@
-import DataProvider from './DataProvider';
+import DataProvider from '../DataProvider';
 
 interface continent {
     id: string,
@@ -26,16 +26,16 @@ export default class ContinentData {
             return
         })
     }
-    public  getData = () => {
+    public getData = () => {
         return new Promise((resolve) => {
             const continentData = window.localStorage.getItem('continentData')
             if (continentData) {
                 const data = JSON.parse(continentData)
                 resolve(data)
             } else {
-               this.setData().then(() => this.getData().then(r => {
-                   resolve(r)
-               }))
+                this.setData().then(() => this.getData().then(r => {
+                    resolve(r)
+                }))
             }
         })
     }
