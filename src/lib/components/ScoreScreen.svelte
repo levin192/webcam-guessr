@@ -1,8 +1,7 @@
 <script lang="ts">
     import {fly} from 'svelte/transition';
     import Button from '@smui/button';
-
-    import {valuesToArray} from '$lib/helpers';
+    import {valuesToArray} from '$lib/util/helpers';
     import SolvedMap from '$lib/maps/SolvedMap.svelte';
 
     export let selectedCoordinates
@@ -35,6 +34,7 @@
   section {
     position: absolute;
     inset: 0;
+
     h2 {
       padding: 0 15px;
     }

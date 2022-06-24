@@ -1,5 +1,5 @@
-import DataProvider from '../DataProvider';
-import { randomEntry } from '../helpers';
+import DataProvider from './DataProvider';
+import { randomEntry } from './helpers';
 
 const countriesData = new DataProvider('/list?show=countries');
 const categoryData = new DataProvider('/list?show=categories');
