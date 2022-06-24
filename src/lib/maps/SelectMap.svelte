@@ -1,14 +1,14 @@
 <script lang="ts">
     import {env} from '$lib/env'
-    import {onMount} from 'svelte';
+    import {onMount, createEventDispatcher} from 'svelte';
+    import Fab, {Icon} from '@smui/fab'
     import Map from "ol/Map.js";
     import View from "ol/View.js";
     import TileLayer from "ol/layer/Tile.js";
     import * as proj from "ol/proj.js";
     import BingMaps from 'ol/source/BingMaps.js';
-    import {createEventDispatcher} from 'svelte';
     import {userPrefDarkMode} from "$lib/store";
-    import Fab, {Icon} from '@smui/fab'
+
 
     const dispatch = createEventDispatcher();
 

@@ -1,7 +1,7 @@
 <script lang="ts">
     import Fab, {Icon} from '@smui/fab';
     import Button from '@smui/button';
-    import LoadingOverlay from '$lib/LoadingOverlay.svelte';
+    import LoadingOverlay from '$lib/components/LoadingOverlay.svelte';
     import {fade} from 'svelte/transition';
     import {createEventDispatcher} from 'svelte';
 
