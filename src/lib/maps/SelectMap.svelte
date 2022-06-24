@@ -10,9 +10,6 @@
     import {userPrefDarkMode} from "$lib/store";
     import Fab, {Icon} from '@smui/fab'
 
-    import '$lib/style/map.scss'
-
-
     const dispatch = createEventDispatcher();
 
     let lightMapStyle;
