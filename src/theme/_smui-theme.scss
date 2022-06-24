@@ -1,8 +1,8 @@
 @use 'sass:color';
+@use 'global-styles';
 
 @use '@material/theme/color-palette';
 // @use '@material/theme/color-palette';
-
 
 @use '@material/theme/index' as theme with (
   $primary: color-palette.$red-500,
@@ -17,16 +17,17 @@ body {
   background: linear-gradient(0deg, rgba(255, 255, 255, 0) 0%, rgba(207, 216, 220, 1) 100%) no-repeat;
   color: theme.$on-surface;
   --primary-color: #{theme.$primary};
-  --secondary-color:  #{theme.$secondary};
-  --surface-color:  #{theme.$surface};
-  --background-color:  #{theme.$background};
-  --error-color:  #{theme.$error};
-  --invert-text:  black;
+  --secondary-color: #{theme.$secondary};
+  --surface-color: #{theme.$surface};
+  --background-color: #{theme.$background};
+  --error-color: #{theme.$error};
+  --invert-text: black;
 }
 
 a {
   color: #40b3ff;
 }
+
 a:visited {
   color: color.scale(#40b3ff, $lightness: -35%);
 }
