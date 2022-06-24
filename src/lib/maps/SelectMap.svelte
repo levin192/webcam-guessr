@@ -5,7 +5,6 @@
     import View from "ol/View.js";
     import TileLayer from "ol/layer/Tile.js";
     import * as proj from "ol/proj.js";
-    // import OSM from "ol/source/OSM.js";
     import BingMaps from 'ol/source/BingMaps.js';
     import {createEventDispatcher} from 'svelte';
     import {userPrefDarkMode} from "$lib/store";
