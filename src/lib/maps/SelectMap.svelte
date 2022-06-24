@@ -8,7 +8,7 @@
     // import OSM from "ol/source/OSM.js";
     import BingMaps from 'ol/source/BingMaps.js';
     import {createEventDispatcher} from 'svelte';
-    import {userPrefDarkMode} from "./store";
+    import {userPrefDarkMode} from "$lib/store";
     import Fab, {Icon} from '@smui/fab'
 
     import '$lib/style/map.scss'
@@ -118,7 +118,7 @@
 
   #map {
     cursor: crosshair;
-    width: calc(80vw - 4em);
+    width: calc(80vw - 4em - 4rem);
     height: 50vh;
 
     &.locked {

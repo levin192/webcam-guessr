@@ -3,6 +3,7 @@
     import {setUserPrefDarkMode} from "$lib/setUserPrefDarkMode";
     import ContinentData from "$lib/ContinentData";
     import {onMount} from "svelte";
+
     onMount(() => {
         setUserPrefDarkMode()
         new ContinentData().setData()
@@ -25,11 +26,13 @@
         flex: 1;
         display: flex;
         flex-direction: column;
+        justify-content: center;
         padding: 1rem;
         width: 100%;
         max-width: 100%;
         margin: 0 auto;
-        box-sizing: border-box;
+        max-height: 100vh;
+        min-height: 99vh;
     }
 
     footer {
