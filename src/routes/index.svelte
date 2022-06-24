@@ -4,12 +4,12 @@
 
 <script lang="ts">
     import Button from '@smui/button';
-    import RandomCam from '$lib/webcam/RandomCam';
     import DataProvider from '$lib/DataProvider';
     import {randomEntry, getDistanceInKm} from '$lib/helpers';
-    import Modal from '$lib/Modal.svelte';
     import SelectMap from '$lib/maps/SelectMap.svelte';
-    import SelectGameMode from '$lib/SelectGameMode.svelte';
+    import RandomCam from '$lib/util/RandomCam';
+    import Modal from '$lib/components/Modal.svelte';
+    import SelectGameMode from '$lib/components/SelectGameMode.svelte';
     import ScoreScreen from "$lib/components/ScoreScreen.svelte";
     import WebcamScreen from "$lib/components/WebcamScreen.svelte";
 

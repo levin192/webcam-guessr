@@ -1,14 +1,5 @@
 <script lang="ts">
     import Header from '$lib/header/Header.svelte';
-    import {setUserPrefDarkMode} from "$lib/setUserPrefDarkMode";
-    import ContinentData from "$lib/ContinentData";
-    import {onMount} from "svelte";
-
-    onMount(() => {
-        setUserPrefDarkMode()
-        new ContinentData().setData()
-    })
-
 </script>
 
 <Header/>

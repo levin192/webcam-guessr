@@ -1,4 +1,4 @@
-import {userPrefDarkMode} from "./store";
+import {userPrefDarkMode} from "../store";
 
 const isDarkMode = () => {
     return (window.matchMedia('(prefers-color-scheme: dark)').matches)
