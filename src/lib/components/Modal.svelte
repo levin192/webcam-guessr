@@ -66,7 +66,7 @@
     border-radius: 4px;
     background: var(--background-color);
     box-shadow: #161616 0 0 70px 15px;
-
+    z-index: 5;
     &-head {
       display: flex;
       align-items: center;

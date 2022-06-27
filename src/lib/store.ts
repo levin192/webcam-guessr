@@ -7,7 +7,10 @@ export const gameMode = writable({
 })
 
 export const gameState = writable({
-    round: 0,
-    score: 0,
-    results: []
+    currentRound: 0,
+    totalScore: 0,
+    results: [],
+    resetCount: 0
 })
+
+export const maxRounds = writable(10)

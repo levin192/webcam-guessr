@@ -1,10 +1,11 @@
 <script lang="ts">
     import Select, {Option} from '@smui/select';
     import Autocomplete from '@smui-extra/autocomplete';
+    import Slider from '@smui/slider';
     import {onMount} from "svelte";
     import ContinentData from "$lib/util/data/ContinentData";
     import CountryData from "$lib/util/data/CountryData";
-    import {gameMode} from "../store";
+    import {gameMode, maxRounds} from "../store";
 
     let gameModes = ['World', 'Continent', 'Country'];
     let selectedGameMode
@@ -12,6 +13,7 @@
     let selectedContinent
     let countries
     let selectedCountry
+
 
     onMount(() => {
         new ContinentData().getData().then(data => {
@@ -28,6 +30,12 @@
     gameMode.subscribe(value => {
         selectedGameMode = value.mode;
     });
+
+    let maxRoundsStore
+    maxRounds.subscribe(value => {
+        maxRoundsStore = value;
+    });
+
     $: if (selectedCountry) {
         gameMode.set({mode: selectedGameMode, value: selectedCountry.id})
     }
@@ -35,9 +43,12 @@
         gameMode.set({mode: selectedGameMode, value: selectedContinent})
     }
 
+    $: maxRoundsStore, maxRounds.set(maxRoundsStore)
+
 
 </script>
 <div>
+
     <div>
         <Select bind:value={selectedGameMode} label="Select Game Mode">
             {#each gameModes as mode}
@@ -66,6 +77,17 @@
             />
         </div>
     {/if}
+    <div>
+        Rounds: {maxRoundsStore}
+        <Slider
+                bind:value={maxRoundsStore}
+                min={2}
+                max={20}
+                step={2}
+                discrete
+                input$aria-label="Discrete slider"
+        />
+    </div>
 </div>
 
 <style lang="scss">

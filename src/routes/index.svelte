@@ -4,16 +4,15 @@
 
 <script lang="ts">
     import Button from '@smui/button';
-    import {gameMode} from "$lib/store";
+    import {gameMode, gameState, maxRounds} from "$lib/store";
     import DataProvider from '$lib/util/DataProvider';
-    import {randomEntry, getDistanceInKm} from '$lib/util/helpers';
+    import {getDistanceInKm} from '$lib/util/helpers';
     import SelectMap from '$lib/maps/SelectMap.svelte';
     import CountryData from '$lib/util/data/CountryData';
     import Modal from '$lib/components/Modal.svelte';
     import SelectGameMode from '$lib/components/SelectGameMode.svelte';
     import ScoreScreen from "$lib/components/ScoreScreen.svelte";
-    import WebcamScreen from "$lib/components/WebcamScreen.svelte";
-
+    import WebcamScreen from "$lib/components/WebcamScreen.svelte";;
 
 
     let country: unknown;
@@ -31,6 +30,11 @@
     let staticGameMode = true
     let staticWebCamList
     let staticWebCamListLoaded = false
+    let storeGameState
+    let maxRoundsStore
+    let isFinal = false
+    let finalCoordsRegistered = false
+
 
     const countryData = new CountryData()
 
@@ -53,7 +57,19 @@
         }
     };
 
+    const handleResetGame = () => {
+        gameState.update(n => {
+            n.resetCount = n.resetCount + 1
+            return n
+        })
+        resetCountry()
+    }
+
     const handleGameStart = () => {
+        gameState.update(n => {
+            n.currentRound = 1
+            return n
+        })
         clickedStart = true;
         loadCountry()
     }
@@ -70,26 +86,30 @@
     };
 
     const getWebCam = () => {
+        const maxResets = 3
+        const fetchLimit = maxRoundsStore + maxResets
+
         if (!selectedGameMode.value) {
             staticGameMode = false
-            fetchPath = '/list/country=' + country + '?show=webcams:location,image,player'
+            fetchPath = '/list/country=' + country + '/limit=1/orderby=random?show=webcams:location,image,player'
         } else if (selectedGameMode.mode === 'Country') {
-            fetchPath = '/list/country=' + country + '/limit=40?show=webcams:location,image,player'
+            fetchPath = '/list/country=' + country + '/limit=' + fetchLimit + '/orderby=random?show=webcams:location,image,player'
         } else if (selectedGameMode.mode === 'Continent') {
-            fetchPath = '/list/continent=' + country + '/limit=40?show=webcams:location,image,player'
+            fetchPath = '/list/continent=' + country + '/limit=' + fetchLimit + '/orderby=random?show=webcams:location,image,player'
         }
 
         const allWebCams = new DataProvider(fetchPath);
         if (staticWebCamListLoaded && staticGameMode) {
-            webcam = randomEntry(staticWebCamList)
+            webcam = staticWebCamList[(storeGameState.currentRound - 1) + storeGameState.resetCount]
             setWebCamImage(webcam)
         }
         if (!staticWebCamListLoaded || !staticGameMode) {
+            webcamLoaded = false
             allWebCams
                 .fetchApiContent()
                 .then((data) => {
                     staticWebCamList = data.result.webcams
-                    webcam = randomEntry(staticWebCamList);
+                    webcam = staticWebCamList[0];
                     webcamLoaded = true;
                     staticWebCamListLoaded = true;
                     return webcam;
@@ -98,7 +118,6 @@
                     setWebCamImage(webcam)
                 });
         }
-
     }
 
     const setWebCamImage = (webcam) => {
@@ -114,6 +133,14 @@
         selectedGameMode = value;
     });
 
+    gameState.subscribe(value => {
+        storeGameState = value;
+    });
+
+    maxRounds.subscribe(value => {
+        maxRoundsStore = value;
+    });
+
     $: if (countryLoaded === 1 && clickedStart) {
         countryLoaded++;
         getWebCam();
@@ -121,11 +148,12 @@
 </script>
 
 <svelte:head>
-    <title>WebcamGuessr</title>
+    <title>Webcam-Guessr</title>
     <meta name="description" content="Guess where the webcam is!"/>
 </svelte:head>
 {#if score}
-    <ScoreScreen {selectedCoordinates} {actualCoordinates} {score} {webcam} on:resetGame={resetCountry}/>
+    <ScoreScreen {selectedCoordinates} {actualCoordinates} {score} {webcam} {finalCoordsRegistered} on:resetGame={resetCountry}
+                 on:finalRound={()=>{isFinal=true}}/>
 {/if}
 {#if !clickedStart}
     <section class="intro">
@@ -137,7 +165,7 @@
 {#if clickedStart && !score}
     <WebcamScreen
             on:modalShow={() =>{showModal=true}}
-            on:resetGame={resetCountry}
+            on:resetGame={handleResetGame}
             {countryLoaded}
             {webcamLoaded}
             {webcam}
@@ -148,7 +176,7 @@
     <section>
         <Modal on:close={() => (showModal = false)}>
             <h2 slot="header">Place Marker</h2>
-            <SelectMap on:setCoordinates={handleSetCoordinates}/>
+            <SelectMap on:setCoordinates={handleSetCoordinates} on:finalCoordsSet={()=>{finalCoordsRegistered = true}} {isFinal}/>
         </Modal>
     </section>
 {/if}
