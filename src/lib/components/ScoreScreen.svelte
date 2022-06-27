@@ -3,6 +3,9 @@
     import Button from '@smui/button';
     import {valuesToArray} from '$lib/util/helpers';
     import SolvedMap from '$lib/maps/SolvedMap.svelte';
+    import {createEventDispatcher} from 'svelte';
+
+    const dispatch = createEventDispatcher()
 
     export let selectedCoordinates
     export let actualCoordinates
@@ -23,6 +26,7 @@
     <h1>Score: {calcScorePoints(score)}/1000</h1>
     <b>Distance: {score}km</b>
     <h2>The Webcam is in: {webCam.location.city}, {webCam.location.country}</h2>
+    <Button on:click={() => dispatch('resetGame')}>Next</Button>
     <Button
             on:click={() => {
 					window.location.reload();

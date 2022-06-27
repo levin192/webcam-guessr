@@ -36,6 +36,7 @@
 
     const resetCountry = () => {
         countryLoaded = 0;
+        score = null
         loadCountry();
     };
 
@@ -124,7 +125,7 @@
     <meta name="description" content="Guess where the webcam is!"/>
 </svelte:head>
 {#if score}
-    <ScoreScreen {selectedCoordinates} {actualCoordinates} {score} {webCam}/>
+    <ScoreScreen {selectedCoordinates} {actualCoordinates} {score} {webCam} on:resetGame={resetCountry}/>
 {/if}
 {#if !clickedStart}
     <section class="intro">

@@ -5,3 +5,9 @@ export const gameMode = writable({
     mode: 'World',
     value: null
 })
+
+export const gameState = writable({
+    round: 0,
+    score: 0,
+    results: []
+})
