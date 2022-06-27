@@ -8,3 +8,10 @@ section {
   align-items: center;
   flex: 1;
 }
+
+body {
+  --mdc-menu-max-height: 25vh;
+  .mdc-data-table__sort-icon-button {
+    opacity: 1 !important; // No idea how to override for now
+  }
+}

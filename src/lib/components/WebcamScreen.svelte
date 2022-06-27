@@ -1,19 +1,27 @@
 <script lang="ts">
     import Fab, {Icon} from '@smui/fab';
+    import IconButton from '@smui/icon-button'
+    import type {SnackbarComponentDev} from '@smui/snackbar';
+    import Snackbar, {Actions, Label} from '@smui/snackbar';
     import Button from '@smui/button';
     import LoadingOverlay from '$lib/components/LoadingOverlay.svelte';
+    import {gameState} from "$lib/store";
     import {fade} from 'svelte/transition';
     import {createEventDispatcher} from 'svelte';
+
 
     const dispatch = createEventDispatcher()
 
     export let countryLoaded
-    export let webCamLoaded
-    export let webCam
-    export let webCamImage
+    export let webcamLoaded
+    export let webcam
+    export let webcamImage
 
     let showWebcam = false;
     let showDayTime = false;
+
+    let storeGameState
+    let resetInfoSnackbar: SnackbarComponentDev;
 
     const toggleShowDayTime = () => {
         showWebcam = false;
@@ -22,15 +30,26 @@
     const toggleShowWebcam = () => {
         showWebcam = !showWebcam;
     };
+
+    const handleResetClick = () => {
+        if (storeGameState.resetCount == 2) {
+            resetInfoSnackbar.open()
+        }
+        dispatch('resetGame')
+    }
+
+    gameState.subscribe(value => {
+        storeGameState = value;
+    });
 </script>
 
-<section class="webCam-section" transition:fade>
-    {#if countryLoaded && webCamLoaded}
+<section class="webcam-section" transition:fade>
+    {#if countryLoaded && webcamLoaded}
         <div>
             <h1>Where is this?</h1>
         </div>
-        <div class="webCam-wrapper" transition:fade>
-            <div class="webCam-actions">
+        <div class="webcam-wrapper" transition:fade>
+            <div class="webcam-actions">
                 <Fab color="primary" mini on:click={toggleShowDayTime}>
                     <Icon class="material-icons">brightness_6</Icon>
                 </Fab>
@@ -38,35 +57,43 @@
                     <Icon class="material-icons">videocam</Icon>
                 </Fab>
             </div>
-            {#if webCamLoaded}
+            {#if webcamLoaded}
                 {#if showWebcam}
-                    <iframe title="the cam" height="430px" width="100%" src={webCam.player.day.embed}></iframe>
-                {:else if webCamImage}
+                    <iframe title="the cam" height="430px" width="100%" src={webcam.player.day.embed}></iframe>
+                {:else if webcamImage}
                     {#if showDayTime}
                         <img
-                                src={webCamImage.daylight}
-                                alt="webCam"
-                                width={webCamImage.width}
-                                height={webCamImage.height}
+                                src={webcamImage.daylight}
+                                alt="webcam"
+                                width={webcamImage.width}
+                                height={webcamImage.height}
                         />
                     {:else}
                         <img
-                                src={webCamImage.current}
-                                alt="webCam"
-                                width={webCamImage.width}
-                                height={webCamImage.height}
+                                src={webcamImage.current}
+                                alt="webcam"
+                                width={webcamImage.width}
+                                height={webcamImage.height}
                         />
                     {/if}
                 {/if}
-                <div class="webCam-info">
+                <div class="webcam-info">
                     Webcams provided by <a href="https://www.windy.com/" target="_blank">windy.com</a>
-                    &mdash; <a href="https://www.windy.com/webCams/add" target="_blank">add a webCam</a>
+                    &mdash; <a href="https://www.windy.com/webcams/add" target="_blank">add a webcam</a>
                 </div>
             {/if}
             <div class="actions-buttons-wrap">
                 <Button on:click={() => dispatch('modalShow')} variant="raised">Show Map</Button>
-                <Button on:click={() => dispatch('resetGame')}>Reset</Button>
+                <Button disabled={storeGameState.resetCount >= 3} on:click={handleResetClick}>
+                    Reset {storeGameState.resetCount}/3
+                </Button>
             </div>
+            <Snackbar bind:this={resetInfoSnackbar}>
+                <Label>Max amount of resets used!</Label>
+                <Actions>
+                    <IconButton class="material-icons" title="Dismiss">close</IconButton>
+                </Actions>
+            </Snackbar>
         </div>
     {:else}
         <div transition:fade>
@@ -76,7 +103,7 @@
 </section>
 
 <style lang="scss">
-  .webCam-wrapper {
+  .webcam-wrapper {
     position: relative;
     width: 100%;
     display: flex;
@@ -90,7 +117,7 @@
       height: auto;
     }
 
-    .webCam-actions {
+    .webcam-actions {
       position: absolute;
       top: 5px;
       right: 5px;
@@ -102,7 +129,7 @@
     }
   }
 
-  .webCam-info {
+  .webcam-info {
     text-align: right;
     font-size: .8rem;
     margin-top: 2px;

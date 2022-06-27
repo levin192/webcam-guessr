@@ -12,6 +12,8 @@
 
     const dispatch = createEventDispatcher();
 
+    export let isFinal
+
     let lightMapStyle;
 
 
@@ -57,14 +59,12 @@
     let markerVisible = false
     let markerLocked = false
 
-    // $: if (markerLocked) {
-    //     console.log('locked')
-    // }
-
     const confirmCoordinates = () => {
         dispatch('setCoordinates', {
             lat, lon
         })
+        if (isFinal)
+            dispatch('finalCoordsSet')
     }
 
     const handleMouseUp = (event) => {
@@ -86,9 +86,8 @@
     const moved = (actual: number, comparison: number) => {
         return Math.abs(actual - comparison) === 0
     }
-
-
 </script>
+
 <div class="map-wrapper">
     <div id="map" class:locked={markerLocked} on:mousedown={handleMouseDown} on:mouseup={handleMouseUp}></div>
     <div id="marker" class:visible={markerVisible} class:locked={markerLocked} style="top:{m.y}px;left:{m.x}px">
@@ -102,7 +101,7 @@
             </Fab>
         </div>
     </div>
-    {m.y}
+    <small>Show hint here</small>
 </div>
 
 <style lang="scss">
