@@ -58,15 +58,20 @@
     position: absolute;
     left: 50%;
     top: 50%;
-    width: calc(80vw - 4em);
-    max-height: calc(100vh - 4em);
+    width: calc(100vw);
+    max-height: calc(100vh - 2em);
     overflow: visible;
+    overflow-y: auto;
     transform: translate(-50%, -50%);
     padding: 1rem 2rem;
     border-radius: 4px;
     background: var(--background-color);
     box-shadow: #161616 0 0 70px 15px;
     z-index: 5;
+    @media (min-width: 900px) {
+      width: calc(80vw - 4em);
+      max-height: calc(100vh - 2em);
+    }
     &-head {
       display: flex;
       align-items: center;

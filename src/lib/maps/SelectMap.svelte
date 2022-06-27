@@ -113,9 +113,11 @@
 
   #map {
     cursor: crosshair;
-    width: calc(80vw - 4em - 4rem);
+    width: calc(100vw - 4rem);
     height: 50vh;
-
+    @media (min-width: 900px) {
+      width: calc(80vw - 4em - 4rem);
+    }
     &.locked {
       cursor: progress;
     }

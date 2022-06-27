@@ -95,6 +95,7 @@
 
     h2 {
       padding: 0 15px;
+      text-align: center;
     }
   }
 </style>
