@@ -10,7 +10,7 @@
     export let selectedCoordinates
     export let actualCoordinates
     export let score
-    export let webCam
+    export let webcam
 
     const calcScorePoints = (km: number) => {
         let kmToScore = (1000 / (km + 1000)) * 1000;
@@ -25,7 +25,7 @@
     />
     <h1>Score: {calcScorePoints(score)}/1000</h1>
     <b>Distance: {score}km</b>
-    <h2>The Webcam is in: {webCam.location.city}, {webCam.location.country}</h2>
+    <h2>The Webcam is in: {webcam.location.city}, {webcam.location.country}</h2>
     <Button on:click={() => dispatch('resetGame')}>Next</Button>
     <Button
             on:click={() => {

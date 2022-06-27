@@ -18,13 +18,13 @@
 
     let country: unknown;
     let countryLoaded = 0;
-    let webCam: string | PromiseLike<string>;
-    let webCamLoaded = false;
+    let webcam: string | PromiseLike<string>;
+    let webcamLoaded = false;
     let showModal = false;
     let selectedCoordinates;
     let actualCoordinates;
     let score: number;
-    let webCamImage: any;
+    let webcamImage: any;
     let clickedStart = false;
     let selectedGameMode
     let fetchPath
@@ -64,7 +64,7 @@
             lon: parseFloat(selectedCoordinates.lon),
             lat: parseFloat(selectedCoordinates.lat)
         };
-        actualCoordinates = {lon: webCam.location.longitude, lat: webCam.location.latitude};
+        actualCoordinates = {lon: webcam.location.longitude, lat: webcam.location.latitude};
         showModal = false;
         score = getDistanceInKm(selectedCoordinates, actualCoordinates);
     };
@@ -81,18 +81,18 @@
 
         const allWebCams = new DataProvider(fetchPath);
         if (staticWebCamListLoaded && staticGameMode) {
-            webCam = randomEntry(staticWebCamList)
-            setWebCamImage(webCam)
+            webcam = randomEntry(staticWebCamList)
+            setWebCamImage(webcam)
         }
         if (!staticWebCamListLoaded || !staticGameMode) {
             allWebCams
                 .fetchApiContent()
                 .then((data) => {
                     staticWebCamList = data.result.webcams
-                    webCam = randomEntry(staticWebCamList);
-                    webCamLoaded = true;
+                    webcam = randomEntry(staticWebCamList);
+                    webcamLoaded = true;
                     staticWebCamListLoaded = true;
-                    return webCam;
+                    return webcam;
                 })
                 .then((webcam) => {
                     setWebCamImage(webcam)
@@ -103,7 +103,7 @@
 
     const setWebCamImage = (webcam) => {
         const sizes = webcam.image.sizes.preview;
-        webCamImage = {
+        webcamImage = {
             ...sizes,
             current: webcam.image.current.preview,
             daylight: webcam.image.daylight.preview
@@ -125,7 +125,7 @@
     <meta name="description" content="Guess where the webcam is!"/>
 </svelte:head>
 {#if score}
-    <ScoreScreen {selectedCoordinates} {actualCoordinates} {score} {webCam} on:resetGame={resetCountry}/>
+    <ScoreScreen {selectedCoordinates} {actualCoordinates} {score} {webcam} on:resetGame={resetCountry}/>
 {/if}
 {#if !clickedStart}
     <section class="intro">
@@ -139,9 +139,9 @@
             on:modalShow={() =>{showModal=true}}
             on:resetGame={resetCountry}
             {countryLoaded}
-            {webCamLoaded}
-            {webCam}
-            {webCamImage}
+            {webcamLoaded}
+            {webcam}
+            {webcamImage}
     />
 {/if}
 {#if showModal}
