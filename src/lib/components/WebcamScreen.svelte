@@ -8,8 +8,8 @@
     const dispatch = createEventDispatcher()
 
     export let countryLoaded
-    export let webcamLoaded
-    export let webcam
+    export let webCamLoaded
+    export let webCam
     export let webCamImage
 
     let showWebcam = false;
@@ -24,13 +24,13 @@
     };
 </script>
 
-<section class="webcam-section" transition:fade>
-    {#if countryLoaded && webcamLoaded}
+<section class="webCam-section" transition:fade>
+    {#if countryLoaded && webCamLoaded}
         <div>
             <h1>Where is this?</h1>
         </div>
-        <div class="webcam-wrapper" transition:fade>
-            <div class="webcam-actions">
+        <div class="webCam-wrapper" transition:fade>
+            <div class="webCam-actions">
                 <Fab color="primary" mini on:click={toggleShowDayTime}>
                     <Icon class="material-icons">brightness_6</Icon>
                 </Fab>
@@ -38,29 +38,29 @@
                     <Icon class="material-icons">videocam</Icon>
                 </Fab>
             </div>
-            {#if webcamLoaded}
+            {#if webCamLoaded}
                 {#if showWebcam}
-                    <iframe title="the cam" height="430px" width="100%" src={webcam.player.day.embed}></iframe>
+                    <iframe title="the cam" height="430px" width="100%" src={webCam.player.day.embed}></iframe>
                 {:else if webCamImage}
                     {#if showDayTime}
                         <img
                                 src={webCamImage.daylight}
-                                alt="webcam"
+                                alt="webCam"
                                 width={webCamImage.width}
                                 height={webCamImage.height}
                         />
                     {:else}
                         <img
                                 src={webCamImage.current}
-                                alt="webcam"
+                                alt="webCam"
                                 width={webCamImage.width}
                                 height={webCamImage.height}
                         />
                     {/if}
                 {/if}
-                <div class="webcam-info">
+                <div class="webCam-info">
                     Webcams provided by <a href="https://www.windy.com/" target="_blank">windy.com</a>
-                    &mdash; <a href="https://www.windy.com/webcams/add" target="_blank">add a webcam</a>
+                    &mdash; <a href="https://www.windy.com/webCams/add" target="_blank">add a webCam</a>
                 </div>
             {/if}
             <div class="actions-buttons-wrap">
@@ -76,7 +76,7 @@
 </section>
 
 <style lang="scss">
-  .webcam-wrapper {
+  .webCam-wrapper {
     position: relative;
     width: 100%;
     display: flex;
@@ -90,7 +90,7 @@
       height: auto;
     }
 
-    .webcam-actions {
+    .webCam-actions {
       position: absolute;
       top: 5px;
       right: 5px;
@@ -102,7 +102,7 @@
     }
   }
 
-  .webcam-info {
+  .webCam-info {
     text-align: right;
     font-size: .8rem;
     margin-top: 2px;
