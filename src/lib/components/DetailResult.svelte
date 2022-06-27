@@ -24,7 +24,6 @@
 
 
     const handleSort = () => {
-        console.log(gameState)
         items.sort((a, b) => {
             const [aVal, bVal] = [a[sort], b[sort]][
                 sortDirection === 'ascending' ? 'slice' : 'reverse'
