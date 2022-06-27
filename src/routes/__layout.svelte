@@ -12,7 +12,7 @@
 
 </footer>
 
-<style>
+<style lang="scss">
     main {
         flex: 1;
         display: flex;
@@ -22,8 +22,10 @@
         width: 100%;
         max-width: 100%;
         margin: 0 auto;
-        max-height: 100vh;
         min-height: 99vh;
+        @media (min-width: 900px) {
+            max-height: 100vh;
+        }
     }
 
     footer {

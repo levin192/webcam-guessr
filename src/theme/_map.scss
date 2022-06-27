@@ -2,15 +2,30 @@
   button {
       display: none;
   }
+  .ol-attribution {
+    button {
+      display: block;
+      background: var(--background-color);
+      border: none;
+      margin: 5px 3px;
+
+    }
+    &.ol-collapsed > ul {
+        opacity: 0;
+     }
+  }
   ul {
+    transition: opacity ease-in-out .3s;
+    opacity: 1;
     list-style: none;
-    padding-left: 0;
     position: absolute;
     bottom: 0;
     right: 0;
-    padding-right: 15px;
     font-size: .85rem;
     line-height: 1.4;
     text-align: right;
+    background-color: var(--background-color);
+    padding: 10px;
+    border-radius: 0.2em;
   }
 }

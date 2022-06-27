@@ -12,7 +12,8 @@
     import Modal from '$lib/components/Modal.svelte';
     import SelectGameMode from '$lib/components/SelectGameMode.svelte';
     import ScoreScreen from "$lib/components/ScoreScreen.svelte";
-    import WebcamScreen from "$lib/components/WebcamScreen.svelte";;
+    import WebcamScreen from "$lib/components/WebcamScreen.svelte";
+    import {fade} from "svelte/transition";
 
 
     let country: unknown;
@@ -173,8 +174,8 @@
     />
 {/if}
 {#if showModal}
-    <section>
-        <Modal on:close={() => (showModal = false)}>
+    <section transition:fade style="position: absolute;inset: 0;">
+        <Modal on:close={() => (showModal = false)} >
             <h2 slot="header">Place Marker</h2>
             <SelectMap on:setCoordinates={handleSetCoordinates} on:finalCoordsSet={()=>{finalCoordsRegistered = true}} {isFinal}/>
         </Modal>
