@@ -68,9 +68,14 @@
     }
 
     const handleMouseUp = (event) => {
+        const targetClassList = event.target.classList
+        let preventLock = false
+        if (targetClassList.contains('ol-attribution-expand') || targetClassList.contains('ol-attribution-collapse')) {
+            preventLock = true
+        }
         const posX = event.clientX
         const posY = event.clientY
-        if (moved(posY, mOld.y) || moved(posX, mOld.x)) {
+        if ((moved(posY, mOld.y) || moved(posX, mOld.x)) && !preventLock) {
             markerLocked = true
             const bounding = event.target.getBoundingClientRect()
             m.x = posX - bounding.left - 6;
@@ -113,8 +118,11 @@
 
   #map {
     cursor: crosshair;
-    width: calc(80vw - 4em - 4rem);
+    width: calc(100vw - 4rem);
     height: 50vh;
+    @media (min-width: 900px) {
+      width: calc(80vw - 4em - 4rem);
+    }
 
     &.locked {
       cursor: progress;

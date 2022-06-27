@@ -54,7 +54,7 @@
                     bind:sortDirection
                     on:SMUIDataTable:sorted={handleSort}
                     table$aria-label="User list"
-                    style="margin-bottom: auto;"
+                    style="margin-bottom: auto;max-width: calc(100vw - 4rem)"
             >
                 <Head>
                     <Row>
@@ -132,8 +132,11 @@
 <style lang="scss">
   .scores {
     display: grid;
-    grid-template-columns: max-content 2fr;
     gap: 30px 30px;
+    grid-template-columns: 1fr;
+    @media (min-width: 900px) {
+      grid-template-columns: max-content 2fr;
+    }
   }
 
   .flag {
@@ -148,11 +151,22 @@
 
   .images {
     display: flex;
-    flex-wrap: wrap;
     margin-left: -5px;
     margin-right: -5px;
+    overflow-x: auto;
+    max-width: calc(100vw - 4rem);
+    scroll-snap-type: x mandatory;
+    @media (min-width: 900px) {
+      flex-wrap: wrap;
+    }
     &-card {
       margin: 5px;
+      min-width: 250px;
+      scroll-snap-align: start;
+      scroll-behavior: smooth;
+      @media (min-width: 900px) {
+        flex-wrap: wrap;
+      }
     }
   }
 

@@ -161,8 +161,12 @@
 <style lang="scss">
 
   #solvedMap {
-    width: calc(80vw - 4em);
-    height: 50vh;
+    height: 30vh;
+    width: calc(100vw - 4rem);
+    @media (min-width: 900px) {
+      width: calc(80vw - 4em);
+      height: 50vh;
+    }
   }
 
 
