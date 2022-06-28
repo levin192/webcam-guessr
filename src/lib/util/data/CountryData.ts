@@ -3,7 +3,6 @@ import {randomEntry} from '../helpers';
 
 
 export default class CountryData {
-    public allCountries: unknown;
 
     public getRandomCountry() {
         return new Promise((resolve) => {
