@@ -1,7 +1,7 @@
-import DataProvider from '../DataProvider';
+import WindyDataProvider from '../WindyDataProvider';
 import {randomEntry, fetchApiContent} from '../helpers';
 
-const categoryData = new DataProvider('/list?show=categories');
+const categoryData = new WindyDataProvider('/list?show=categories');
 
 
 

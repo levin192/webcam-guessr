@@ -5,7 +5,7 @@
 <script lang="ts">
     import Button from '@smui/button';
     import {gameMode, gameState, maxRounds} from "$lib/store";
-    import DataProvider from '$lib/util/DataProvider';
+    import WindyDataProvider from '$lib/util/WindyDataProvider';
     import {getDistanceInKm} from '$lib/util/helpers';
     import SelectMap from '$lib/maps/SelectMap.svelte';
     import CountryData from '$lib/util/data/CountryData';
@@ -99,7 +99,7 @@
             fetchPath = '/list/continent=' + country + '/limit=' + fetchLimit + '/orderby=random?show=webcams:location,image,player'
         }
 
-        const allWebCams = new DataProvider(fetchPath);
+        const allWebCams = new WindyDataProvider(fetchPath);
         if (staticWebCamListLoaded && staticGameMode) {
             webcam = staticWebCamList[(storeGameState.currentRound - 1) + storeGameState.resetCount]
             setWebCamImage(webcam)

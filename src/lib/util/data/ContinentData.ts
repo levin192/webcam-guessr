@@ -1,4 +1,4 @@
-import DataProvider from '../DataProvider';
+import WindyDataProvider from '../WindyDataProvider';
 
 interface continent {
     id: string,
@@ -12,7 +12,7 @@ export default class ContinentData {
         return new Promise((resolve) => {
             const localStorage = window.localStorage
             if (!localStorage.getItem('continentData')) {
-                const continentData = new DataProvider('/list?show=continents');
+                const continentData = new WindyDataProvider('/list?show=continents');
                 continentData.fetchApiContent().then((data: any) => {
                     const result = data.result
                     const continentData = result.continents.filter((continent: continent) => continent.name !== 'Antarctica')
