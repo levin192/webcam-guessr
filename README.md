@@ -28,6 +28,8 @@ npm run dev
 npm run dev -- --open
 ```
 
+Generate Country Data via `node create-json.js`
+
 ## Building
 
 To create a production version of your app:
