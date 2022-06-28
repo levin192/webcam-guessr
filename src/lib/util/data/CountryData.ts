@@ -16,43 +16,38 @@ export default class CountryData {
                 parsedData = parsedData.map((country: any) => country.id)
                 resolve(randomEntry(parsedData));
             } else {
-                this.setAllCountries().then(() => this.getRandomCountry())
+                this.setData().then(() => this.getRandomCountry().then(r => {resolve(r)}))
             }
            })
     }
 
-    public getAllCountries() {
+    public setData = () => {
         return new Promise((resolve) => {
             const localStorage = window.localStorage
-            if (localStorage.getItem('countriesData')) {
-                console.info('🌏 country data in localStorage')
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                const parsedData = JSON.parse(localStorage.getItem('countriesData')) // TYPESCRIPT?!!?!?
-                resolve(parsedData);
+            if (!localStorage.getItem('countriesData')) {
+                const countryData = new DataProvider('/list?show=countries');
+                countryData.fetchApiContent().then((data: any) => {
+                    localStorage.setItem('countriesData', JSON.stringify(data.result.countries))
+                    resolve(data)
+                })
             } else {
-                this.setAllCountries().then(() => this.getAllCountries())
+                console.info('🌏 country data in localStorage')
             }
+            return
         })
     }
-
-    public async setAllCountries() {
-        const localStorage = window.localStorage
-        if (!localStorage.getItem('countriesData')) {
-            const countriesData = new DataProvider('/list?show=countries');
-            this.allCountries = await fetchApiContent(countriesData, 'countries');
-            localStorage.setItem('countriesData', JSON.stringify(this.allCountries))
-        } else {
-            const randomNumberZeroToHundred = Math.floor(Math.random() * 101);
-            if (randomNumberZeroToHundred === 1) {
-                localStorage.removeItem('countriesData')
-                await this.setAllCountries()
+    public getData = () => {
+        return new Promise((resolve) => {
+            const countryData = window.localStorage.getItem('countriesData')
+            if (countryData) {
+                const data = JSON.parse(countryData)
+                resolve(data)
             } else {
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                this.allCountries = JSON.parse(localStorage.getItem('countriesData'))
+                this.setData().then(() => this.getData().then(r => {
+                    resolve(r)
+                }))
             }
-        }
+        })
     }
 
 }

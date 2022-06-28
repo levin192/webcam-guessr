@@ -15,5 +15,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        background-color: var(--background-color);
+        z-index: 999;
     }
 </style>
