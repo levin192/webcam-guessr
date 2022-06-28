@@ -1,5 +1,5 @@
 import WindyDataProvider from '../WindyDataProvider';
-import {randomEntry, fetchApiContent} from '../helpers';
+import {randomEntry} from '../helpers';
 
 
 export default class CountryData {
@@ -16,16 +16,18 @@ export default class CountryData {
                 parsedData = parsedData.map((country: any) => country.id)
                 resolve(randomEntry(parsedData));
             } else {
-                this.setData().then(() => this.getRandomCountry().then(r => {resolve(r)}))
+                this.setData().then(() => this.getRandomCountry().then(r => {
+                    resolve(r)
+                }))
             }
-           })
+        })
     }
 
     public setData = () => {
         return new Promise((resolve) => {
             const localStorage = window.localStorage
             if (!localStorage.getItem('countriesData')) {
-                const countryData = new DataProvider('/list?show=countries');
+                const countryData = new WindyDataProvider('/list?show=countries');
                 countryData.fetchApiContent().then((data: any) => {
                     localStorage.setItem('countriesData', JSON.stringify(data.result.countries))
                     resolve(data)
@@ -50,6 +52,5 @@ export default class CountryData {
             }
         })
     }
-
 }
 
