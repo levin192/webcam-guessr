@@ -8,7 +8,7 @@
     onMount(() => {
         setUserPrefDarkMode()
         new ContinentData().setData()
-        new CountryData().setAllCountries()
+        new CountryData().setData()
     })
 </script>
 <header>
