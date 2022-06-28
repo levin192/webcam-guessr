@@ -3,9 +3,11 @@
     import Autocomplete from '@smui-extra/autocomplete';
     import Slider from '@smui/slider';
     import {onMount} from "svelte";
+    import {fade} from "svelte/transition";
     import ContinentData from "$lib/util/data/ContinentData";
     import CountryData from "$lib/util/data/CountryData";
-    import {gameMode, maxRounds} from "../store";
+    import {gameMode, maxRounds} from "$lib/store";
+    import LoadingOverlay from "$lib/components/LoadingOverlay.svelte";
 
     let gameModes = ['World', 'Continent', 'Country'];
     let selectedGameMode
@@ -19,10 +21,11 @@
         new ContinentData().getData().then(data => {
             continents = data
         })
-        new CountryData().getAllCountries().then(data => {
-            countries = data.sort((a, b) => a.name.localeCompare(b.name))
+        new CountryData().getData().then(data => {
+            countries = data
+            countries = countries.sort((a, b) => a.name.localeCompare(b.name))
             countries = countries.filter(a => {
-               return  a.count >= 40 // Only show countries with more than 40 cams
+                return a.count >= 40 // Only show countries with more than 40 cams
             })
         })
     })
@@ -47,8 +50,12 @@
 
 
 </script>
+{#if !continents || !countries}
+    <section style="position: absolute;inset: 0" transition:fade>
+        <LoadingOverlay/>
+    </section>
+{/if}
 <div>
-
     <div>
         <Select bind:value={selectedGameMode} label="Select Game Mode">
             {#each gameModes as mode}
@@ -66,7 +73,7 @@
 
         </div>
     {/if}
-    {#if selectedGameMode === 'Country' && countries.length}
+    {#if selectedGameMode === 'Country' && countries}
         <div>
             <Autocomplete
                     options={countries}
