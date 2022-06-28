@@ -2,7 +2,7 @@ import { env } from '../env'
 
 
 
-export default class DataProvider {
+export default class WindyDataProvider {
     private readonly apiKey: string
     public apiURL: string
     public apiModifier: string

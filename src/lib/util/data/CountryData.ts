@@ -1,4 +1,4 @@
-import DataProvider from '../DataProvider';
+import WindyDataProvider from '../WindyDataProvider';
 import {randomEntry, fetchApiContent} from '../helpers';
 
 
@@ -39,7 +39,7 @@ export default class CountryData {
     public async setAllCountries() {
         const localStorage = window.localStorage
         if (!localStorage.getItem('countriesData')) {
-            const countriesData = new DataProvider('/list?show=countries');
+            const countriesData = new WindyDataProvider('/list?show=countries');
             this.allCountries = await fetchApiContent(countriesData, 'countries');
             localStorage.setItem('countriesData', JSON.stringify(this.allCountries))
         } else {
