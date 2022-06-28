@@ -19,7 +19,9 @@
     let lightMapStyle;
     let gameModeStore;
     let isCountryMode = false
-    let dynamicExtent: unknown = {w: 0, s:0, e: 0, n: 0}
+    let dynamicExtent: unknown = {sw: [33, 0], ne: [33, 0]}
+    let map
+
 
     userPrefDarkMode.subscribe(value => {
         lightMapStyle = value;
@@ -33,24 +35,24 @@
         isCountryMode = true
     }
 
-
+    if (isCountryMode) {
+        const countryInfo = new CountriesDataProvider(gameModeStore.value)
+        countryInfo.getCountryExtent().then(r => {
+            dynamicExtent = r
+            const view = map.getView()
+            let boundingExtent = extent.boundingExtent([dynamicExtent.sw.reverse(), dynamicExtent.ne.reverse()]);
+            boundingExtent = proj.transformExtent(boundingExtent,proj.get('EPSG:4326'), proj.get('EPSG:3857'));
+            view.fit(boundingExtent,null);
+        })
+    }
     const calcCenter = (a: number, b: number) => {
         return (a + b) / 2
     }
 
-    $: if (isCountryMode) {
-        console.log(gameModeStore.value)
-        const x = new CountriesDataProvider(gameModeStore.value)
-        x.getCountryExtent().then(r => {
-            console.log(r)
-        })
-        // x.getCountryExtent().then(r => {
-        //    dynamicExtent = {...dynamicExtent, ...r}
-        // })
-    }
+
 
     onMount(() => {
-        const map = new Map({
+        map = new Map({
             layers: [
                 new TileLayer({
                     source: new BingMaps({
@@ -66,10 +68,10 @@
             target: "map",
             view: new View({
                 projection: "EPSG:3857",
-                center: proj.transform([calcCenter(dynamicExtent.w, dynamicExtent.e), calcCenter(dynamicExtent.s, dynamicExtent.n)], "EPSG:4326", "EPSG:3857"),
                 minZoom: 1,
                 maxZoom: 10,
                 zoom: 0,
+                center: proj.transform([calcCenter(dynamicExtent.sw[1], dynamicExtent.ne[1]), calcCenter(dynamicExtent.sw[0], dynamicExtent.ne[0])], "EPSG:4326", "EPSG:3857"),
             }),
         })
         map.on('click', (e) => {
@@ -79,16 +81,7 @@
             lon = coordinate[0];
             lat = coordinate[1];
         })
-
-        const view = map.getView()
-
-        let coordinates = [[dynamicExtent.w, dynamicExtent.s], [dynamicExtent.e, dynamicExtent.n]]
-        let boundingExtent = extent.boundingExtent(coordinates);
-        boundingExtent = proj.transformExtent(boundingExtent,proj.get('EPSG:4326'), proj.get('EPSG:3857'));
-
-        view.fit(boundingExtent,null);
-
-    })
+            })
     let lon
     let lat
     let m = {x: 0, y: 0}

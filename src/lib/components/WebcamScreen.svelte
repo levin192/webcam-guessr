@@ -46,7 +46,7 @@
 <section class="webcam-section" transition:fade>
     {#if countryLoaded && webcamLoaded}
         <div>
-            <h1>Where is this?</h1>
+            <Button style="margin-bottom: 1rem" on:click={() => dispatch('modalShow')}> <h1>Where is this?</h1></Button>
         </div>
         <div class="webcam-wrapper" transition:fade>
             <div class="webcam-actions">
@@ -83,7 +83,7 @@
                 </div>
             {/if}
             <div class="actions-buttons-wrap">
-                <Button on:click={() => dispatch('modalShow')} variant="raised">Show Map</Button>
+                <Button on:click={() => dispatch('modalShow')} variant="raised">Guess the location</Button>
                 <Button disabled={storeGameState.resetCount >= 3} on:click={handleResetClick}>
                     Reset {storeGameState.resetCount}/3
                 </Button>

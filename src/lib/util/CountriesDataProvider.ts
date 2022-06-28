@@ -5,8 +5,10 @@ export default class CountriesDataProvider {
     public apiModifier: string
     public apiContent: object | undefined
     public fetchUrl: string
+    public country: string
 
     constructor(modifier: string) {
+        this.country = modifier.toLowerCase()
         this.apiURL = '/data/json/countries/'
         this.apiModifier = this.setModifier(modifier)
         this.fetchUrl = this.setFetchUrl()
@@ -30,16 +32,9 @@ export default class CountriesDataProvider {
     }
 
     public async getCountryExtent() {
-        console.log(this.apiModifier)
-        const apiResponse: unknown = await this.fetchApiContent()
-        let countryExtent = apiResponse
-        console.log(apiResponse)
-        // countryExtent = countryExtent.map(item => {
-        //     return {
-        //         w: item.west, s: item.south, e: item.east, n: item.north
-        //     }
-        // })
-        // countryExtent = countryExtent[0]
-        return countryExtent
+        const apiResponse: any = await this.fetchApiContent()
+        return {
+            ...apiResponse[this.country].boundingBox
+        }
     }
 }
