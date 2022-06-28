@@ -6,20 +6,48 @@
     import View from "ol/View.js";
     import TileLayer from "ol/layer/Tile.js";
     import * as proj from "ol/proj.js";
+    import * as extent from "ol/extent.js";
     import BingMaps from 'ol/source/BingMaps.js';
-    import {userPrefDarkMode} from "$lib/store";
+    import {userPrefDarkMode, gameMode} from "$lib/store";
 
+    import CountriesDataProvider from "$lib/util/CountriesDataProvider";
 
     const dispatch = createEventDispatcher();
 
     export let isFinal
 
     let lightMapStyle;
-
+    let gameModeStore;
+    let isCountryMode = false
+    let dynamicExtent: unknown = {w: 0, s:0, e: 0, n: 0}
 
     userPrefDarkMode.subscribe(value => {
         lightMapStyle = value;
     });
+
+    gameMode.subscribe(value => {
+        gameModeStore = value;
+    });
+
+    if (gameModeStore.mode === 'Country') {
+        isCountryMode = true
+    }
+
+
+    const calcCenter = (a: number, b: number) => {
+        return (a + b) / 2
+    }
+
+    $: if (isCountryMode) {
+        console.log(gameModeStore.value)
+        const x = new CountriesDataProvider(gameModeStore.value)
+        x.getCountryExtent().then(r => {
+            console.log(r)
+        })
+        // x.getCountryExtent().then(r => {
+        //    dynamicExtent = {...dynamicExtent, ...r}
+        // })
+    }
 
     onMount(() => {
         const map = new Map({
@@ -37,9 +65,9 @@
             ],
             target: "map",
             view: new View({
-                projection: "EPSG:900913", // OSM projection
-                center: proj.transform([10.454124, 51.351489], "EPSG:4326", "EPSG:900913"),
-                minZoom: 0,
+                projection: "EPSG:3857",
+                center: proj.transform([calcCenter(dynamicExtent.w, dynamicExtent.e), calcCenter(dynamicExtent.s, dynamicExtent.n)], "EPSG:4326", "EPSG:3857"),
+                minZoom: 1,
                 maxZoom: 10,
                 zoom: 0,
             }),
@@ -51,6 +79,15 @@
             lon = coordinate[0];
             lat = coordinate[1];
         })
+
+        const view = map.getView()
+
+        let coordinates = [[dynamicExtent.w, dynamicExtent.s], [dynamicExtent.e, dynamicExtent.n]]
+        let boundingExtent = extent.boundingExtent(coordinates);
+        boundingExtent = proj.transformExtent(boundingExtent,proj.get('EPSG:4326'), proj.get('EPSG:3857'));
+
+        view.fit(boundingExtent,null);
+
     })
     let lon
     let lat

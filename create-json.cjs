@@ -7104,7 +7104,7 @@ for (const item in unformattedJson) {
 const fs = require('fs')
 const path = require('path');
 
-const filePath = path.resolve(__dirname, '') + '/src/lib/json/countries/'
+const filePath = path.resolve(__dirname, '') + '/public/data/json/countries/'
 
 fs.mkdirSync(filePath, { recursive: true });
 
