@@ -28,7 +28,7 @@ npm run dev
 npm run dev -- --open
 ```
 
-Generate Country Data via `node create-json.js`
+Generate Country Data via `node create-json.cjs`
 
 ## Building
 
