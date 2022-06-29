@@ -175,7 +175,7 @@
 {/if}
 {#if showModal}
     <section transition:fade style="position: absolute;inset: 0;">
-        <Modal on:close={() => (showModal = false)} >
+        <Modal on:close={() => (showModal = false)} cssClass="modal-map">
             <h2 slot="header">Place Marker</h2>
             <SelectMap on:setCoordinates={handleSetCoordinates} on:finalCoordsSet={()=>{finalCoordsRegistered = true}} {isFinal}/>
         </Modal>

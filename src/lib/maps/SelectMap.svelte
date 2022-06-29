@@ -6,23 +6,53 @@
     import View from "ol/View.js";
     import TileLayer from "ol/layer/Tile.js";
     import * as proj from "ol/proj.js";
+    import * as extent from "ol/extent.js";
     import BingMaps from 'ol/source/BingMaps.js';
-    import {userPrefDarkMode} from "$lib/store";
+    import {userPrefDarkMode, gameMode} from "$lib/store";
 
+    import CountriesDataProvider from "$lib/util/CountriesDataProvider";
 
     const dispatch = createEventDispatcher();
 
     export let isFinal
 
     let lightMapStyle;
+    let gameModeStore;
+    let isCountryMode = false
+    let dynamicExtent: unknown = {sw: [33, 0], ne: [33, 0]}
+    let map
 
 
     userPrefDarkMode.subscribe(value => {
         lightMapStyle = value;
     });
 
+    gameMode.subscribe(value => {
+        gameModeStore = value;
+    });
+
+    if (gameModeStore.mode === 'Country') {
+        isCountryMode = true
+    }
+
+    if (isCountryMode) {
+        const countryInfo = new CountriesDataProvider(gameModeStore.value)
+        countryInfo.getCountryExtent().then(r => {
+            dynamicExtent = r
+            const view = map.getView()
+            let boundingExtent = extent.boundingExtent([dynamicExtent.sw.reverse(), dynamicExtent.ne.reverse()]);
+            boundingExtent = proj.transformExtent(boundingExtent,proj.get('EPSG:4326'), proj.get('EPSG:3857'));
+            view.fit(boundingExtent,null);
+        })
+    }
+    const calcCenter = (a: number, b: number) => {
+        return (a + b) / 2
+    }
+
+
+
     onMount(() => {
-        const map = new Map({
+        map = new Map({
             layers: [
                 new TileLayer({
                     source: new BingMaps({
@@ -37,11 +67,11 @@
             ],
             target: "map",
             view: new View({
-                projection: "EPSG:900913", // OSM projection
-                center: proj.transform([10.454124, 51.351489], "EPSG:4326", "EPSG:900913"),
-                minZoom: 0,
+                projection: "EPSG:3857",
+                minZoom: 1,
                 maxZoom: 10,
                 zoom: 0,
+                center: proj.transform([calcCenter(dynamicExtent.sw[1], dynamicExtent.ne[1]), calcCenter(dynamicExtent.sw[0], dynamicExtent.ne[0])], "EPSG:4326", "EPSG:3857"),
             }),
         })
         map.on('click', (e) => {
@@ -51,7 +81,7 @@
             lon = coordinate[0];
             lat = coordinate[1];
         })
-    })
+            })
     let lon
     let lat
     let m = {x: 0, y: 0}

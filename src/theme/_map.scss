@@ -19,13 +19,13 @@
     opacity: 1;
     list-style: none;
     position: absolute;
-    bottom: 0;
-    right: 0;
+    top: 17px;
+    left: 3px;
     font-size: .85rem;
     line-height: 1.4;
     text-align: right;
     background-color: var(--background-color);
     padding: 10px;
-    border-radius: 0.2em;
+    border-radius: 0 .2em .2em .2em;
   }
 }

@@ -44,7 +44,7 @@
 
 <Button style="margin: 1rem 0" on:click={()=>{showModal=true}}>Show Detailed Result</Button>
 {#if showModal}
-    <Modal on:close={()=>{showModal=false}}>
+    <Modal on:close={()=>{showModal=false}} cssClass="modal-score">
         <h2 slot="header">Detailed Result</h2>
         <div class="scores">
 

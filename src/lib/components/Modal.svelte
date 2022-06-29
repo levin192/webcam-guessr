@@ -5,6 +5,8 @@
   const dispatch = createEventDispatcher()
   const close = () => dispatch('close')
 
+  export let cssClass
+
   let modal
 
   const handle_keydown = e => {
@@ -42,7 +44,7 @@
 
 <div class="modal-background" on:click={close}></div>
 
-<div class="modal" role="dialog" aria-modal="true" bind:this={modal}>
+<div class="modal" role="dialog" aria-modal="true" bind:this={modal} class:cssClass>
     <div class="modal-head">
         <div class="modal-head-slot">
             <slot name="header"></slot>
@@ -61,13 +63,15 @@
     width: calc(100vw);
     max-height: calc(100vh - 2em);
     overflow: visible;
-    overflow-y: auto;
     transform: translate(-50%, -50%);
     padding: 1rem 2rem;
     border-radius: 4px;
     background: var(--background-color);
     box-shadow: #161616 0 0 70px 15px;
     z-index: 5;
+    &-score {
+      overflow-y: auto;
+    }
     @media (min-width: 900px) {
       width: calc(80vw - 4em);
       max-height: calc(100vh - 2em);
