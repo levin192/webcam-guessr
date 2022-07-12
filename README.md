@@ -30,7 +30,7 @@ npm run dev -- --open
 
 Generate Country Data via `node create-json.cjs`
 
-Credits country list: [https://gist.github.com/cplpearce/3bc5f1e9b1187df51d2085ffca795bee](https://gist.github.com/cplpearce/3bc5f1e9b1187df51d2085ffca795bee)
+Get data from: [https://gist.github.com/cplpearce/3bc5f1e9b1187df51d2085ffca795bee](https://gist.github.com/cplpearce/3bc5f1e9b1187df51d2085ffca795bee)
 
 ## Building
 
