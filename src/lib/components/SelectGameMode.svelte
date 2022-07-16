@@ -88,11 +88,11 @@
         Rounds: {maxRoundsStore}
         <Slider
                 bind:value={maxRoundsStore}
-                min={2}
+                min={1}
                 max={20}
-                step={2}
+                step={1}
                 discrete
-                input$aria-label="Discrete slider"
+                input$aria-label="Rounds"
         />
     </div>
 </div>

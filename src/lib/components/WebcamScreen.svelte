@@ -6,7 +6,7 @@
     import Button from '@smui/button';
     import LoadingOverlay from '$lib/components/LoadingOverlay.svelte';
     import HintHandler from '$lib/components/HintHandler.svelte';
-    import {gameState} from "$lib/store";
+    import {gameState, gameMode} from "$lib/store";
     import {fade} from 'svelte/transition';
     import {createEventDispatcher} from 'svelte';
 
@@ -84,7 +84,9 @@
                 </div>
             {/if}
             <div class="actions-buttons-wrap">
-                <HintHandler {webcam}/>
+                {#if $gameMode.mode !== 'Country'}
+                    <HintHandler {webcam}/>
+                {/if}
                 <Button on:click={() => dispatch('modalShow')} variant="raised">Guess the location</Button>
                 <Button disabled={storeGameState.resetCount >= 3} on:click={handleResetClick}>
                     Reset {storeGameState.resetCount}/3
