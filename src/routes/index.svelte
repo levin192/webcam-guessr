@@ -153,7 +153,8 @@
     <meta name="description" content="Guess where the webcam is!"/>
 </svelte:head>
 {#if score}
-    <ScoreScreen {selectedCoordinates} {actualCoordinates} {score} {webcam} {finalCoordsRegistered} on:resetGame={resetCountry}
+    <ScoreScreen {selectedCoordinates} {actualCoordinates} {score} {webcam} {finalCoordsRegistered}
+                 on:resetGame={resetCountry}
                  on:finalRound={()=>{isFinal=true}}/>
 {/if}
 {#if !clickedStart}
@@ -177,7 +178,8 @@
     <section transition:fade style="position: absolute;inset: 0;">
         <Modal on:close={() => (showModal = false)} cssClass="modal-map">
             <h2 slot="header">Place Marker</h2>
-            <SelectMap on:setCoordinates={handleSetCoordinates} on:finalCoordsSet={()=>{finalCoordsRegistered = true}} {isFinal}/>
+            <SelectMap on:setCoordinates={handleSetCoordinates} on:finalCoordsSet={()=>{finalCoordsRegistered = true}}
+                       {isFinal}/>
         </Modal>
     </section>
 {/if}

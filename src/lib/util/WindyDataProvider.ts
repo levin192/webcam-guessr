@@ -1,5 +1,4 @@
-import { env } from '../env'
-
+import {env} from '../env'
 
 
 export default class WindyDataProvider {
@@ -15,8 +14,9 @@ export default class WindyDataProvider {
         this.apiModifier = this.cleanModifier(modifier)
         this.fetchUrl = this.setFetchUrl()
     }
+
     private cleanModifier = (modifier: string) => {
-        return (modifier[0]=== '/')?modifier.substring(1):modifier
+        return (modifier[0] === '/') ? modifier.substring(1) : modifier
     }
     private setFetchUrl = () => {
         return this.apiURL + this.apiModifier
@@ -25,16 +25,23 @@ export default class WindyDataProvider {
         const requestHeaders: HeadersInit = new Headers();
         requestHeaders.set('x-windy-key', this.apiKey);
 
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
             fetch(this.fetchUrl, {
                 headers: requestHeaders
+            }).then(response => {
+                return response
             }).then(data => {
                 this.apiContent = data.json()
                 resolve(this.apiContent)
-            })
+            }).catch((reason) => {
+                    console.log('API Unreachable', reason)
+                    reject('API Error')
+                }
+            )
+
         })
     }
     public setApiKey = () => {
-        return (env.VITE_WINDY_API_KEY)?env.VITE_WINDY_API_KEY:''
+        return (env.VITE_WINDY_API_KEY) ? env.VITE_WINDY_API_KEY : ''
     }
 }
