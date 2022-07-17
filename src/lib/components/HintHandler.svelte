@@ -2,6 +2,8 @@
     import Button, {Icon, Label} from '@smui/button'
     import TeleportDataProvider from "$lib/util/TeleportDataProvider";
     import Modal from '$lib/components/Modal.svelte';
+    import {gameState} from "../store";
+
 
     export let webcam
 
@@ -29,13 +31,15 @@
             population = r.population
         })
         salaries.fetchApiContent().then(r => {
-            allSalaryHints = r.salaries.map(x => {
-                return {
-                    id: x.job.id,
-                    name: x.job.title,
-                    salary: Math.ceil((x.salary_percentiles.percentile_75) / 12)
-                }
-            })
+            if (r.salaries) {
+                allSalaryHints = r.salaries.map(x => {
+                    return {
+                        id: x.job.id,
+                        name: x.job.title,
+                        salary: Math.ceil((x.salary_percentiles.percentile_75) / 12)
+                    }
+                })
+            }
         })
         locationInfo.fetchApiContent().then(r => {
             const urbanArea = r['_embedded']["location:nearest-urban-areas"]
@@ -63,6 +67,15 @@
         const vocals = ['a', 'e', 'i', 'o', 'u']
         return vocals.includes(s.toLowerCase())
     }
+
+    $: if (flagReveal) {
+        gameState.update(n => {
+            n.totalScore = n.totalScore - 500
+            return n
+        })
+    }
+
+
 </script>
 
 <Button on:click={fetchHintContents}>
@@ -112,22 +125,31 @@
   .photo-wrapper {
     position: relative;
     margin-bottom: 15px;
-
+    display: flex;
+    flex-direction: column-reverse;
     small {
       right: 0;
       bottom: 0;
       padding: 1px 4px;
       background-color: transparentize(white, .5);
-      position: absolute;
       text-align: right;
       display: block;
+      @media (min-width: 969px) {
+        position: absolute;
+      }
     }
   }
-.facts {
-  display: grid;
-  grid-auto-columns: 1fr;
-  grid-template-columns: 5fr 1fr;
-  gap: 0 15px;
-  margin-bottom: 15px;
-}
+
+  .facts {
+    display: grid;
+    grid-auto-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
+    gap: 15px 15px;
+    margin-bottom: 15px;
+    @media (min-width: 969px) {
+      grid-auto-columns: 1fr;
+      grid-template-columns: 5fr 1fr;
+      gap: 0 15px;
+    }
+  }
 </style>

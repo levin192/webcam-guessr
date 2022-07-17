@@ -69,7 +69,7 @@
             view: new View({
                 projection: "EPSG:3857",
                 minZoom: 1,
-                maxZoom: 10,
+                maxZoom: 15,
                 zoom: 0,
                 center: proj.transform([calcCenter(dynamicExtent.sw[1], dynamicExtent.ne[1]), calcCenter(dynamicExtent.sw[0], dynamicExtent.ne[0])], "EPSG:4326", "EPSG:3857"),
             }),
