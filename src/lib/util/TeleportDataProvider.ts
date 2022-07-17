@@ -1,16 +1,12 @@
-import {env} from '../env'
 
-
-export default class WindyDataProvider {
-    private readonly apiKey: string
+export default class TeleportDataProvider {
     public apiURL: string
     public apiModifier: string
     public apiContent: object | undefined
     public fetchUrl: string
 
     constructor(modifier: string) {
-        this.apiKey = this.setApiKey()
-        this.apiURL = 'https://api.windy.com/api/webcams/v2/'
+        this.apiURL = 'https://api.teleport.org/api/'
         this.apiModifier = this.cleanModifier(modifier)
         this.fetchUrl = this.setFetchUrl()
     }
@@ -23,7 +19,7 @@ export default class WindyDataProvider {
     }
     public fetchApiContent = () => {
         const requestHeaders: HeadersInit = new Headers();
-        requestHeaders.set('x-windy-key', this.apiKey);
+        requestHeaders.set('Accept', 'application/vnd.teleport.v1+json');
 
         return new Promise((resolve, reject) => {
             fetch(this.fetchUrl, {
@@ -40,8 +36,5 @@ export default class WindyDataProvider {
             )
 
         })
-    }
-    public setApiKey = () => {
-        return (env.VITE_WINDY_API_KEY) ? env.VITE_WINDY_API_KEY : ''
     }
 }

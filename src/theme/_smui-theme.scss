@@ -12,6 +12,8 @@
   $error: color-palette.$red-900
 );
 
+@use '@material/elevation/mdc-elevation';
+
 html,
 body {
   background: linear-gradient(0deg, rgba(255, 255, 255, 0) 0%, rgba(207, 216, 220, 1) 100%) no-repeat;
@@ -31,3 +33,4 @@ a {
 a:visited {
   color: color.scale(#40b3ff, $lightness: -35%);
 }
+

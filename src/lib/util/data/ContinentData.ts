@@ -21,7 +21,7 @@ export default class ContinentData {
                     resolve(data)
                 })
             } else {
-                console.info('🌏 continent data in localStorage')
+                console.info('🌏 Continent data in localStorage')
             }
             return
         })

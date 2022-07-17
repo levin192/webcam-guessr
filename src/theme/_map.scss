@@ -15,6 +15,7 @@
      }
   }
   ul {
+    pointer-events: none;
     transition: opacity ease-in-out .3s;
     opacity: 1;
     list-style: none;
@@ -23,9 +24,12 @@
     left: 3px;
     font-size: .85rem;
     line-height: 1.4;
-    text-align: right;
+    text-align: left;
     background-color: var(--background-color);
     padding: 10px;
     border-radius: 0 .2em .2em .2em;
+    a {
+      pointer-events: all;
+    }
   }
 }

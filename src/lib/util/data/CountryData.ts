@@ -8,7 +8,7 @@ export default class CountryData {
         return new Promise((resolve) => {
             const localStorage = window.localStorage
             if (localStorage.getItem('countriesData')) {
-                console.info('🌏 country data in localStorage')
+                console.info('🌏 Country data in localStorage')
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
                 let parsedData = JSON.parse(localStorage.getItem('countriesData'))
@@ -32,7 +32,7 @@ export default class CountryData {
                     resolve(data)
                 })
             } else {
-                console.info('🌏 country data in localStorage')
+                console.info('🌏 Country data in localStorage')
             }
             return
         })
